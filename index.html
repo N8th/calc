@@ -1,290 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Interactive Nathan Game</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4x6 Grid with Editable Cells and Instructions</title>
     <style>
-      body {
-        font-family: "Comic Sans MS", sans-serif;
-        background-color: #333;
-        color: #fff;
-        margin: 0;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-      }
-
-      h1 {
-        color: #ffcc00;
-      }
-
-      #game-container {
-        width: 100%;
-        max-width: 600px;
-        background-color: #444;
-        padding: 20px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-        border-radius: 15px;
-        text-align: center;
-      }
-
-      #chat-box {
-        max-height: 300px;
-        overflow-y: auto;
-        margin-bottom: 20px;
-        border: 2px solid #ffcc00;
-        padding: 15px;
-        border-radius: 10px;
-        background-color: #555;
-      }
-
-      .message {
-        margin-bottom: 10px;
-        padding: 5px 10px;
-        border-radius: 10px;
-      }
-
-      .nathan-message {
-        color: #ffcc00;
-        text-align: left;
-        background-color: #333;
-      }
-
-      .user-message {
-        color: #00ccff;
-        text-align: right;
-        background-color: #222;
-      }
-
-      #user-input {
-        width: 100%;
-        padding: 10px;
-        border-radius: 10px;
-        border: 1px solid #555;
-        background-color: #333;
-        color: #fff;
-      }
-
-      #submit-button,
-      .choice-button {
-        margin-top: 10px;
-        padding: 10px 15px;
-        background-color: #00ccff;
-        color: #fff;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-      }
-
-      #submit-button:hover,
-      .choice-button:hover {
-        background-color: #0099cc;
-      }
-
-      .choice-button {
-        background-color: #ffcc00;
-        color: #333;
-        margin: 5px;
-      }
-
-      .choice-button:hover {
-        background-color: #cc9900;
-      }
-
-      #game-options {
-        margin-bottom: 20px;
-      }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 200px);
+            grid-template-rows: repeat(6, 100px);
+            gap: 10px;
+        }
+        .grid-item {
+            background-color: #f0f0f0;
+            border: 2px solid #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .grid-item.selected {
+            background-color: #90caf9;
+            border-color: #42a5f5;
+        }
+        .editor-container {
+            margin-left: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        textarea {
+            width: 300px;
+            height: 150px;
+            margin-bottom: 10px;
+        }
+        .instruction-box {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .instruction-box input[type="text"] {
+            width: 300px;
+            margin-bottom: 10px;
+        }
     </style>
-  </head>
-  <body>
-    <h1>Interactive Nathan Game</h1>
+</head>
+<body>
 
-    <div id="game-container">
-      <div id="game-options">
-        <h3>Choose a game to play:</h3>
-        <button
-          class="choice-button"
-          onclick="startGame('21 Questions Guess Who')"
-        >
-          21 Questions Guess Who
-        </button>
-        <button
-          class="choice-button"
-          onclick="startGame('Riddles with Nathan')"
-        >
-          Riddles with Nathan
-        </button>
-        <button
-          class="choice-button"
-          onclick="startGame('Nathan Trivia Challenge')"
-        >
-          Nathan Trivia Challenge
-        </button>
-        <button class="choice-button" onclick="startGame('Custom Game')">
-          Custom Game
-        </button>
-      </div>
+<div class="grid-container">
+    <div class="grid-item" data-id="1">Cell 1</div>
+    <div class="grid-item" data-id="2">Cell 2 <input type="checkbox"></input></div>
+    <div class="grid-item" data-id="3">Cell 3</div>
+    <div class="grid-item" data-id="4">Cell 4</div>
+    <div class="grid-item" data-id="5">Cell 5</div>
+    <div class="grid-item" data-id="6">Cell 6</div>
+    <div class="grid-item" data-id="7">Cell 7</div>
+    <div class="grid-item" data-id="8">Cell 8</div>
+    <div class="grid-item" data-id="9">Cell 9</div>
+    <div class="grid-item" data-id="10">Cell 10</div>
+    <div class="grid-item" data-id="11">Cell 11</div>
+    <div class="grid-item" data-id="12">Cell 12</div>
+    <div class="grid-item" data-id="13">Cell 13</div>
+    <div class="grid-item" data-id="14">Cell 14</div>
+    <div class="grid-item" data-id="15">Cell 15</div>
+    <div class="grid-item" data-id="16">Cell 16</div>
+    <div class="grid-item" data-id="17">Cell 17</div>
+    <div class="grid-item" data-id="18">Cell 18</div>
+    <div class="grid-item" data-id="19">Cell 19</div>
+    <div class="grid-item" data-id="20">Cell 20</div>
+    <div class="grid-item" data-id="21">Cell 21</div>
+    <div class="grid-item" data-id="22">Cell 22</div>
+    <div class="grid-item" data-id="23">Cell 23</div>
+    <div class="grid-item" data-id="24">Cell 24</div>
+</div>
 
-      <div id="chat-box" style="display: none">
-        <!-- Nathan and user messages will be displayed here -->
-      </div>
-
-      <textarea
-        id="user-input"
-        placeholder="Type your response here..."
-        style="display: none"
-      ></textarea>
-      <button id="submit-button" style="display: none">Send</button>
+<div class="editor-container">
+    <textarea id="editor" placeholder="Edit HTML here..."></textarea>
+    <button id="saveBtn">Save</button>
+    
+    <div class="instruction-box">
+        <input type="text" id="instruction" placeholder="Enter instructions">
+        <button id="sendBtn">Send Instruction</button>
     </div>
+</div>
 
-    <script>
-      const p2 =
-        "BaViLgqkjYFT0cECh8lp1P9L1aNT3BlbkFJj0oGrr73csNygyVY7v7fTbrWbN4THxHyMwv";
-      const p1 = "btrjJye8RXPxMeVZ1DOxBkA";
-      const p3 = "sk-proj-xAQxCapK2dLug2gN_Fwocree_qh3C6k";
-      const API_TOKEN = p3 + p2 + p1;
-
-      const chatBox = document.getElementById("chat-box");
-      const userInput = document.getElementById("user-input");
-      const submitButton = document.getElementById("submit-button");
-      const gameOptions = document.getElementById("game-options");
-
-      let conversationHistory = [];
-      let currentGame = "";
-
-      async function makeApiRequest(userMessage) {
-        conversationHistory.push({ role: "user", content: userMessage });
-
-        const messages = conversationHistory.map((entry) => ({
-          role: entry.role,
-          content: entry.content,
-        }));
-
-        try {
-          const response = await fetch(
-            "https://api.openai.com/v1/chat/completions",
-            {
-              method: "POST",
-              headers: {
-                Authorization: `Bearer ${API_TOKEN}`,
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                model: "gpt-4o-mini",
-                messages: messages,
+<script>
+    const p2 =
+    "BaViLgqkjYFT0cECh8lp1P9L1aNT3BlbkFJj0oGrr73csNygyVY7v7fTbrWbN4THxHyMwv";
+  const p1 = "btrjJye8RXPxMeVZ1DOxBkA";
+  const p3 = "sk-proj-xAQxCapK2dLug2gN_Fwocree_qh3C6k";
+  const API_TOKEN = p3 + p2 + p1;    
+    async function makeApiRequest(userMessage) {
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${API_TOKEN}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: 'gpt-4o-mini',
+                messages: [
+                    {
+                        role: 'system',
+                        content: 'You are Nathan, a helpful assistant. Only edit the following code and respond in plain text, in one continuous line, with no code blocks, no quotes, no newlines, and no formatting. Only return the updated HTML code.'
+                    },
+                    {
+                        role: 'user',
+                        content: userMessage // The specific code and instructions that need to be modified
+                    }
+                ],
                 temperature: 1,
                 max_tokens: 256,
                 top_p: 1,
                 frequency_penalty: 0,
-                presence_penalty: 0,
-              }),
-            }
-          );
-
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-
-          const data = await response.json();
-          const nathanMessage = data.choices[0].message.content.trim();
-          conversationHistory.push({
-            role: "assistant",
-            content: nathanMessage,
-          });
-          updateChatBox("nathan", nathanMessage);
-          displayYesNoButtons();
-        } catch (error) {
-          console.error("Error:", error);
-          updateChatBox(
-            "nathan",
-            "Oops! Something went wrong. Please try again."
-          );
-        }
-      }
-
-      function updateChatBox(sender, message) {
-        const messageElement = document.createElement("div");
-        messageElement.classList.add("message");
-        messageElement.classList.add(
-          sender === "nathan" ? "nathan-message" : "user-message"
-        );
-        messageElement.textContent = message;
-        chatBox.appendChild(messageElement);
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }
-
-      function startGame(gameChoice) {
-        gameOptions.style.display = "none";
-        chatBox.style.display = "block";
-        userInput.style.display = "block";
-        submitButton.style.display = "block";
-        currentGame = gameChoice;
-
-        let initialMessage = "";
-
-        if (gameChoice === "21 Questions Guess Who") {
-          initialMessage =
-            "Think of a person, and I'll try to guess who it is by asking questions!";
-        } else if (gameChoice === "Riddles with Nathan") {
-          initialMessage = "I'll ask you riddles, and you try to solve them!";
-        } else if (gameChoice === "Nathan Trivia Challenge") {
-          initialMessage =
-            "Let's play a trivia challenge! I'll ask questions, and you answer them!";
-        } else if (gameChoice === "Custom Game") {
-          initialMessage =
-            "Welcome to the Custom Game! Let's set the rules together.";
-        }
-
-        updateChatBox("nathan", initialMessage);
-        conversationHistory.push({
-          role: "assistant",
-          content: initialMessage,
+                presence_penalty: 0
+            })
         });
-      }
 
-      function displayYesNoButtons() {
-        const yesButton = document.createElement("button");
-        yesButton.textContent = "Yes";
-        yesButton.classList.add("choice-button");
-        yesButton.addEventListener("click", () => handleUserResponse("Yes"));
-
-        const noButton = document.createElement("button");
-        noButton.textContent = "No";
-        noButton.classList.add("choice-button");
-        noButton.addEventListener("click", () => handleUserResponse("No"));
-
-        const buttonContainer = document.createElement("div");
-        buttonContainer.appendChild(yesButton);
-        buttonContainer.appendChild(noButton);
-        chatBox.appendChild(buttonContainer);
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }
-
-      function handleUserResponse(response) {
-        updateChatBox("user", response);
-        conversationHistory.push({ role: "user", content: response });
-
-        // Remove the Yes/No buttons after a response
-        const buttonContainer = chatBox.querySelector("div");
-        if (buttonContainer) {
-          buttonContainer.remove();
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        makeApiRequest(response);
-      }
+        const data = await response.json();
+        return data.choices[0].message.content.trim();
+    }
 
-      submitButton.addEventListener("click", () => {
-        const userMessage = userInput.value.trim();
-        if (userMessage) {
-          updateChatBox("user", userMessage);
-          userInput.value = "";
-          makeApiRequest(userMessage);
+    const gridItems = document.querySelectorAll('.grid-item');
+    const editor = document.getElementById('editor');
+    const saveBtn = document.getElementById('saveBtn');
+    const sendBtn = document.getElementById('sendBtn');
+    const instructionInput = document.getElementById('instruction');
+    let selectedCell = null;
+
+    gridItems.forEach(item => {
+        item.addEventListener('click', () => {
+            if (selectedCell) {
+                selectedCell.classList.remove('selected');
+            }
+            selectedCell = item;
+            selectedCell.classList.add('selected');
+            editor.value = selectedCell.outerHTML;
+        });
+    });
+
+    saveBtn.addEventListener('click', () => {
+        if (selectedCell) {
+            selectedCell.outerHTML = editor.value;
+            selectedCell = document.querySelector(`.grid-item.selected`); // Re-select the updated element
         }
-      });
-    </script>
-  </body>
+    });
+
+    sendBtn.addEventListener('click', async () => {
+        if (selectedCell) {
+            const instruction = instructionInput.value;
+            const cellContents = selectedCell.outerHTML;
+            const userMessage = `Instruction: ${instruction}\n\nCode:\n${cellContents}`;
+            
+            try {
+                const updatedCode = await makeApiRequest(userMessage);
+                selectedCell.outerHTML = updatedCode;
+                selectedCell = document.querySelector(`.grid-item.selected`); // Re-select the updated element
+                editor.value = selectedCell.outerHTML; // Update the editor with the new content
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        } else {
+            alert("Please select a cell first.");
+        }
+    });
+</script>
+
+</body>
 </html>

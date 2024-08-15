@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #525252;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 600px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      .form-group output {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+        color: #333;
+      }
+      .total {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 24px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2></h2>
+
+      <!-- Income Section -->
+      <div class="form-group">
+        <label for="grossSalary">Gross Salary (per year):</label>
+        <input
+          type="number"
+          id="grossSalary"
+          oninput="calculateNetWorth()"
+          placeholder="Enter your gross salary"
+        />
+      </div>
+      <div class="form-group">
+        <label for="takeHomePay">Take-Home Pay (per paycheck):</label>
+        <output id="takeHomePay"></output>
+      </div>
+      <div class="form-group">
+        <label for="monthlyTakeHome">Monthly Take-Home Pay:</label>
+        <output id="monthlyTakeHome"></output>
+      </div>
+      <div class="form-group">
+        <label for="bonusMin">Quarterly Bonus Range (Minimum):</label>
+        <input
+          type="number"
+          id="bonusMin"
+          oninput="calculateNetWorth()"
+          placeholder="Enter minimum bonus"
+        />
+      </div>
+      <div class="form-group">
+        <label for="bonusMax">Quarterly Bonus Range (Maximum):</label>
+        <input
+          type="number"
+          id="bonusMax"
+          oninput="calculateNetWorth()"
+          placeholder="Enter maximum bonus"
+        />
+      </div>
+      <div class="form-group">
+        <label for="potentialIncomeMin"
+          >Total Potential Annual Income (Minimum):</label
+        >
+        <output id="potentialIncomeMin"></output>
+      </div>
+      <div class="form-group">
+        <label for="potentialIncomeMax"
+          >Total Potential Annual Income (Maximum):</label
+        >
+        <output id="potentialIncomeMax"></output>
+      </div>
+
+      <!-- Expenses Section -->
+      <div class="form-group">
+        <label for="gasCost">Gas Cost (per month):</label>
+        <input
+          type="number"
+          id="gasCost"
+          oninput="calculateNetWorth()"
+          placeholder="Enter gas cost"
+        />
+      </div>
+      <div class="form-group">
+        <label for="tollsCost">Tolls Cost (per month):</label>
+        <input
+          type="number"
+          id="tollsCost"
+          oninput="calculateNetWorth()"
+          placeholder="Enter tolls cost"
+        />
+      </div>
+      <div class="form-group">
+        <label for="totalCommutingCosts"
+          >Total Commuting Costs (per month):</label
+        >
+        <output id="totalCommutingCosts"></output>
+      </div>
+
+      <!-- Assets Section -->
+      <div class="form-group">
+        <label for="cashHoldings">Cash Holdings:</label>
+        <input
+          type="number"
+          id="cashHoldings"
+          oninput="calculateNetWorth()"
+          placeholder="Enter cash holdings"
+        />
+      </div>
+      <div class="form-group">
+        <label for="spendingAccount">Spending Account:</label>
+        <input
+          type="number"
+          id="spendingAccount"
+          oninput="calculateNetWorth()"
+          placeholder="Enter spending account"
+        />
+      </div>
+      <div class="form-group">
+        <label for="cryptoHoldings">Total Cryptocurrency Holdings:</label>
+        <input
+          type="number"
+          id="cryptoHoldings"
+          oninput="calculateNetWorth()"
+          placeholder="Enter total cryptocurrency holdings"
+        />
+      </div>
+      <div class="form-group">
+        <label for="stockHoldings">Total Stock Holdings:</label>
+        <input
+          type="number"
+          id="stockHoldings"
+          oninput="calculateNetWorth()"
+          placeholder="Enter total stock holdings"
+        />
+      </div>
+      <div class="form-group">
+        <label for="vehicleValue">Vehicle Value:</label>
+        <input
+          type="number"
+          id="vehicleValue"
+          oninput="calculateNetWorth()"
+          placeholder="Enter vehicle value"
+        />
+      </div>
+
+      <!-- Net Worth Calculation -->
+      <div class="total">nu: <output id="netWorth"></output></div>
+    </div>
+
+    <script>
+      function calculateNetWorth() {
+        // Income Calculations
+        let grossSalary =
+          parseFloat(document.getElementById("grossSalary").value) || 0;
+        let takeHomePay = grossSalary / 24;
+        let monthlyTakeHome = grossSalary / 12;
+
+        document.getElementById("takeHomePay").textContent =
+          takeHomePay.toFixed(2);
+        document.getElementById("monthlyTakeHome").textContent =
+          monthlyTakeHome.toFixed(2);
+
+        let bonusMin =
+          parseFloat(document.getElementById("bonusMin").value) || 0;
+        let bonusMax =
+          parseFloat(document.getElementById("bonusMax").value) || 0;
+
+        let potentialIncomeMin = grossSalary + bonusMin * 4;
+        let potentialIncomeMax = grossSalary + bonusMax * 4;
+
+        document.getElementById("potentialIncomeMin").textContent =
+          potentialIncomeMin.toFixed(2);
+        document.getElementById("potentialIncomeMax").textContent =
+          potentialIncomeMax.toFixed(2);
+
+        // Expense Calculations
+        let gasCost = parseFloat(document.getElementById("gasCost").value) || 0;
+        let tollsCost =
+          parseFloat(document.getElementById("tollsCost").value) || 0;
+
+        let totalCommutingCosts = gasCost + tollsCost;
+
+        document.getElementById("totalCommutingCosts").textContent =
+          totalCommutingCosts.toFixed(2);
+
+        // Assets Calculations
+        let cashHoldings =
+          parseFloat(document.getElementById("cashHoldings").value) || 0;
+        let spendingAccount =
+          parseFloat(document.getElementById("spendingAccount").value) || 0;
+        let cryptoHoldings =
+          parseFloat(document.getElementById("cryptoHoldings").value) || 0;
+        let stockHoldings =
+          parseFloat(document.getElementById("stockHoldings").value) || 0;
+        let vehicleValue =
+          parseFloat(document.getElementById("vehicleValue").value) || 0;
+
+        let totalCashAndHoldings =
+          cashHoldings + spendingAccount + cryptoHoldings + stockHoldings;
+        let netWorth = totalCashAndHoldings + vehicleValue;
+
+        document.getElementById("netWorth").textContent = netWorth.toFixed(2);
+      }
+    </script>
+  </body>
+</html>

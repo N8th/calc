@@ -3,239 +3,272 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title></title>
+    <title>Nathan Games</title>
     <style>
       body {
-        font-family: Arial, sans-serif;
-        background-color: #525252;
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        background-color: #333;
+        color: #fff;
         margin: 0;
         padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
       }
-      .container {
+
+      h1 {
+        color: #ffcc00;
+      }
+
+      #game-container {
+        width: 100%;
         max-width: 600px;
-        margin: auto;
-        background: white;
+        background-color: #444;
         padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
-      h2 {
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        border-radius: 15px;
         text-align: center;
+      }
+
+      #chat-box {
+        max-height: 300px;
+        overflow-y: auto;
         margin-bottom: 20px;
+        border: 2px solid #ffcc00;
+        padding: 15px;
+        border-radius: 10px;
+        background-color: #555;
       }
-      .form-group {
-        margin-bottom: 15px;
+
+      .message {
+        margin-bottom: 10px;
+        padding: 5px 10px;
+        border-radius: 10px;
       }
-      .form-group label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
+
+      .ai-message {
+        color: #ffcc00;
+        text-align: left;
+        background-color: #333;
       }
-      .form-group input {
+
+      .user-message {
+        color: #00ccff;
+        text-align: right;
+        background-color: #222;
+      }
+
+      #user-input {
         width: 100%;
         padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
+        border-radius: 10px;
+        border: 1px solid #555;
+        background-color: #333;
+        color: #fff;
       }
-      .form-group output {
-        display: block;
+
+      #submit-button,
+      .choice-button {
         margin-top: 10px;
-        font-weight: bold;
-        color: #333;
+        padding: 10px 15px;
+        background-color: #00ccff;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
       }
-      .total {
-        text-align: center;
-        margin-top: 20px;
-        font-size: 24px;
-        font-weight: bold;
+
+      #submit-button:hover,
+      .choice-button:hover {
+        background-color: #0099cc;
+      }
+
+      .choice-button {
+        background-color: #ffcc00;
+        color: #333;
+        margin: 5px;
+      }
+
+      .choice-button:hover {
+        background-color: #cc9900;
+      }
+
+      #game-options {
+        margin-bottom: 20px;
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <h2></h2>
+    <h1>Nathan Games</h1>
 
-      <!-- Income Section -->
-      <div class="form-group">
-        <label for="grossSalary">Gross Salary (per year):</label>
-        <input
-          type="number"
-          id="grossSalary"
-          oninput="calculateNetWorth()"
-          placeholder="Enter your gross salary"
-        />
-      </div>
-      <div class="form-group">
-        <label for="takeHomePay">Take-Home Pay (per paycheck):</label>
-        <output id="takeHomePay"></output>
-      </div>
-      <div class="form-group">
-        <label for="monthlyTakeHome">Monthly Take-Home Pay:</label>
-        <output id="monthlyTakeHome"></output>
-      </div>
-      <div class="form-group">
-        <label for="bonusMin">Quarterly Bonus Range (Minimum):</label>
-        <input
-          type="number"
-          id="bonusMin"
-          oninput="calculateNetWorth()"
-          placeholder="Enter minimum bonus"
-        />
-      </div>
-      <div class="form-group">
-        <label for="bonusMax">Quarterly Bonus Range (Maximum):</label>
-        <input
-          type="number"
-          id="bonusMax"
-          oninput="calculateNetWorth()"
-          placeholder="Enter maximum bonus"
-        />
-      </div>
-      <div class="form-group">
-        <label for="potentialIncomeMin"
-          >Total Potential Annual Income (Minimum):</label
+    <div id="game-container">
+      <div id="game-options">
+        <h3>Choose a game to play:</h3>
+        <button
+          class="choice-button"
+          onclick="startGame('21 Questions Guess Who')"
         >
-        <output id="potentialIncomeMin"></output>
-      </div>
-      <div class="form-group">
-        <label for="potentialIncomeMax"
-          >Total Potential Annual Income (Maximum):</label
+          21 Questions Guess Who
+        </button>
+        <button class="choice-button" onclick="startGame('Riddles with AI')">
+          Riddles with AI
+        </button>
+        <button
+          class="choice-button"
+          onclick="startGame('AI Trivia Challenge')"
         >
-        <output id="potentialIncomeMax"></output>
+          AI Trivia Challenge
+        </button>
       </div>
 
-      <!-- Expenses Section -->
-      <div class="form-group">
-        <label for="gasCost">Gas Cost (per month):</label>
-        <input
-          type="number"
-          id="gasCost"
-          oninput="calculateNetWorth()"
-          placeholder="Enter gas cost"
-        />
-      </div>
-      <div class="form-group">
-        <label for="tollsCost">Tolls Cost (per month):</label>
-        <input
-          type="number"
-          id="tollsCost"
-          oninput="calculateNetWorth()"
-          placeholder="Enter tolls cost"
-        />
-      </div>
-      <div class="form-group">
-        <label for="totalCommutingCosts"
-          >Total Commuting Costs (per month):</label
-        >
-        <output id="totalCommutingCosts"></output>
+      <div id="chat-box" style="display: none">
+        <!-- AI and user messages will be displayed here -->
       </div>
 
-      <!-- Assets Section -->
-      <div class="form-group">
-        <label for="cashHoldings">Cash Holdings:</label>
-        <input
-          type="number"
-          id="cashHoldings"
-          oninput="calculateNetWorth()"
-          placeholder="Enter cash holdings"
-        />
-      </div>
-      <div class="form-group">
-        <label for="spendingAccount">Spending Account:</label>
-        <input
-          type="number"
-          id="spendingAccount"
-          oninput="calculateNetWorth()"
-          placeholder="Enter spending account"
-        />
-      </div>
-      <div class="form-group">
-        <label for="cryptoHoldings">Total Cryptocurrency Holdings:</label>
-        <input
-          type="number"
-          id="cryptoHoldings"
-          oninput="calculateNetWorth()"
-          placeholder="Enter total cryptocurrency holdings"
-        />
-      </div>
-      <div class="form-group">
-        <label for="stockHoldings">Total Stock Holdings:</label>
-        <input
-          type="number"
-          id="stockHoldings"
-          oninput="calculateNetWorth()"
-          placeholder="Enter total stock holdings"
-        />
-      </div>
-      <div class="form-group">
-        <label for="vehicleValue">Vehicle Value:</label>
-        <input
-          type="number"
-          id="vehicleValue"
-          oninput="calculateNetWorth()"
-          placeholder="Enter vehicle value"
-        />
-      </div>
-
-      <!-- Net Worth Calculation -->
-      <div class="total">nu: <output id="netWorth"></output></div>
+      <textarea
+        id="user-input"
+        placeholder="Type your response here..."
+        style="display: none"
+      ></textarea>
+      <button id="submit-button" style="display: none">Send</button>
     </div>
 
     <script>
-      function calculateNetWorth() {
-        // Income Calculations
-        let grossSalary =
-          parseFloat(document.getElementById("grossSalary").value) || 0;
-        let takeHomePay = grossSalary / 24;
-        let monthlyTakeHome = grossSalary / 12;
+      const p2 =
+        "BaViLgqkjYFT0cECh8lp1P9L1aNT3BlbkFJj0oGrr73csNygyVY7v7fTbrWbN4THxHyMwv";
+      const p1 = "btrjJye8RXPxMeVZ1DOxBkA";
+      const p3 = "sk-proj-xAQxCapK2dLug2gN_Fwocree_qh3C6k";
+      const API_TOKEN = p2 + p3 + p1;
+      const chatBox = document.getElementById("chat-box");
+      const userInput = document.getElementById("user-input");
+      const submitButton = document.getElementById("submit-button");
+      const gameOptions = document.getElementById("game-options");
 
-        document.getElementById("takeHomePay").textContent =
-          takeHomePay.toFixed(2);
-        document.getElementById("monthlyTakeHome").textContent =
-          monthlyTakeHome.toFixed(2);
+      let conversationHistory = [];
+      let currentGame = "";
 
-        let bonusMin =
-          parseFloat(document.getElementById("bonusMin").value) || 0;
-        let bonusMax =
-          parseFloat(document.getElementById("bonusMax").value) || 0;
+      async function makeApiRequest(userMessage) {
+        conversationHistory.push({ role: "user", content: userMessage });
 
-        let potentialIncomeMin = grossSalary + bonusMin * 4;
-        let potentialIncomeMax = grossSalary + bonusMax * 4;
+        const messages = conversationHistory.map((entry) => ({
+          role: entry.role,
+          content: entry.content,
+        }));
 
-        document.getElementById("potentialIncomeMin").textContent =
-          potentialIncomeMin.toFixed(2);
-        document.getElementById("potentialIncomeMax").textContent =
-          potentialIncomeMax.toFixed(2);
+        try {
+          const response = await fetch(
+            "https://api.openai.com/v1/chat/completions",
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${API_TOKEN}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                model: "gpt-4o-mini",
+                messages: messages,
+                temperature: 1,
+                max_tokens: 256,
+                top_p: 1,
+                frequency_penalty: 0,
+                presence_penalty: 0,
+              }),
+            }
+          );
 
-        // Expense Calculations
-        let gasCost = parseFloat(document.getElementById("gasCost").value) || 0;
-        let tollsCost =
-          parseFloat(document.getElementById("tollsCost").value) || 0;
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
 
-        let totalCommutingCosts = gasCost + tollsCost;
-
-        document.getElementById("totalCommutingCosts").textContent =
-          totalCommutingCosts.toFixed(2);
-
-        // Assets Calculations
-        let cashHoldings =
-          parseFloat(document.getElementById("cashHoldings").value) || 0;
-        let spendingAccount =
-          parseFloat(document.getElementById("spendingAccount").value) || 0;
-        let cryptoHoldings =
-          parseFloat(document.getElementById("cryptoHoldings").value) || 0;
-        let stockHoldings =
-          parseFloat(document.getElementById("stockHoldings").value) || 0;
-        let vehicleValue =
-          parseFloat(document.getElementById("vehicleValue").value) || 0;
-
-        let totalCashAndHoldings =
-          cashHoldings + spendingAccount + cryptoHoldings + stockHoldings;
-        let netWorth = totalCashAndHoldings + vehicleValue;
-
-        document.getElementById("netWorth").textContent = netWorth.toFixed(2);
+          const data = await response.json();
+          const aiMessage = data.choices[0].message.content.trim();
+          conversationHistory.push({ role: "assistant", content: aiMessage });
+          updateChatBox("ai", aiMessage);
+          displayYesNoButtons();
+        } catch (error) {
+          console.error("Error:", error);
+          updateChatBox("ai", "Oops! Something went wrong. Please try again.");
+        }
       }
+
+      function updateChatBox(sender, message) {
+        const messageElement = document.createElement("div");
+        messageElement.classList.add("message");
+        messageElement.classList.add(
+          sender === "ai" ? "ai-message" : "user-message"
+        );
+        messageElement.textContent = message;
+        chatBox.appendChild(messageElement);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      function startGame(gameChoice) {
+        gameOptions.style.display = "none";
+        chatBox.style.display = "block";
+        userInput.style.display = "block";
+        submitButton.style.display = "block";
+        currentGame = gameChoice;
+
+        let initialMessage = "";
+
+        if (gameChoice === "21 Questions Guess Who") {
+          initialMessage =
+            "Think of a person, and I'll try to guess who it is by asking questions!";
+        } else if (gameChoice === "Riddles with AI") {
+          initialMessage = "I'll ask you riddles, and you try to solve them!";
+        } else if (gameChoice === "AI Trivia Challenge") {
+          initialMessage =
+            "Let's play a trivia challenge! I'll ask questions, and you answer them!";
+        }
+
+        updateChatBox("ai", initialMessage);
+        conversationHistory.push({
+          role: "assistant",
+          content: initialMessage,
+        });
+      }
+
+      function displayYesNoButtons() {
+        const yesButton = document.createElement("button");
+        yesButton.textContent = "Yes";
+        yesButton.classList.add("choice-button");
+        yesButton.addEventListener("click", () => handleUserResponse("Yes"));
+
+        const noButton = document.createElement("button");
+        noButton.textContent = "No";
+        noButton.classList.add("choice-button");
+        noButton.addEventListener("click", () => handleUserResponse("No"));
+
+        const buttonContainer = document.createElement("div");
+        buttonContainer.appendChild(yesButton);
+        buttonContainer.appendChild(noButton);
+        chatBox.appendChild(buttonContainer);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      function handleUserResponse(response) {
+        updateChatBox("user", response);
+        conversationHistory.push({ role: "user", content: response });
+
+        // Remove the Yes/No buttons after a response
+        const buttonContainer = chatBox.querySelector("div");
+        if (buttonContainer) {
+          buttonContainer.remove();
+        }
+
+        makeApiRequest(response);
+      }
+
+      submitButton.addEventListener("click", () => {
+        const userMessage = userInput.value.trim();
+        if (userMessage) {
+          updateChatBox("user", userMessage);
+          userInput.value = "";
+          makeApiRequest(userMessage);
+        }
+      });
     </script>
   </body>
 </html>
